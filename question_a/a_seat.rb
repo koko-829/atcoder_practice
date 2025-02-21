@@ -1,6 +1,1 @@
-n,m,p = gets.split.map(&:to_i)
-if m <= n
-  puts (n-m) / p + 1
-else
-  puts 0
-end
+puts gets.split.map(&:to_i).uniq.length == 2 ? "Yes" : "No"
