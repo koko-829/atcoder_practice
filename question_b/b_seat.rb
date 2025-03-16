@@ -1,157 +1,104 @@
-# 最初に大まかな解法を考える。
-# 今回みたいな図形かつ問題の意味がわからないやつ、一回読んで理解できなかったら、もう問題文は読まない。
-# 入力例と出力例を見て、ひたすら隠れてる仕組みを探してみる。
-# まだこの段階ではメソッドとか考えなくても良い。それをできるかできないかは置いといて、「もしその処理ができたら上手くいきそう」を分解して考えてみる。
+高橋君は消してしまった記録の復元を試みようとしています。
+i, o のみからなる文字列 S
+長さが偶数であり、奇数文字目が i で偶数文字目が o である。
 
-
-# 例えば…
-# 「出力結果上下反転になってるな…」=> 変換処理は真ん中までだけ行って、あとはそれを後半に反転させたらいけそう。
-# 「◯から◯の変換ってところだけにフォーカスして順番にたどっていくと、###が続いてるところは端以外を.に、...って続いてるところは端以外を#に。これを繰り返してるだけ？」
-# 「入力例2の説明を見ると、書いてることはよくわからんけど、先に###だけで図形を作ってしまった方ができそう」
-
-#=> 「とりあえず全部#で出力してみる」=>「上半分だけを変換する」=>「最後に下半分にそれを反転させる」の3つに分けたらいけそうと予想を立ててから書いてみる。
----
-# まずどうやって#の列を作成する？今後全部入力値は5にして考えるよ。
-n = gets.to_i #入力値をとってきて…
-# n*n列の#を作成すればいいわけやから…
-arr = Array.new(n) { "#" * n }
-# これやね。これをputsで確認してみると…
-puts arr
-#=>
-#####
-#####
-#####
-#####
-#####
-
-# データとしては配列になっている
-p arr
-#=> ["#####", "#####", "#####", "#####", "#####"]
-
-# ちゃんとできてますな。私は下みたいに書いていたせいでうまくいってなかったみたい。
-# 下は間違い。
-arr = ["#"* n] * n
-
-
-
-
+arr = gets.chomp
+len = arr.length
+count = arr.scan(/io/).size
+puts len - (count * 2)
 
 ---
-# 次に考えること。
-# 左半分を右半分側に反転することができるか。
-# もしこれができたら変換の反復処理は真ん中までだけ行って、
-# あとはそれを後半部分に反転すればいいだけになる。
-
-#最初この状態。
-["#####","#####","#####","#####","#####"]
-
-#前半部分まで規則に従って変換したやつ
-["#####", "#...#", "#.#.#", "#####", "#####"]
-
-#で、これが下みたいになってくれたらいい。
-["#####", "#...#", "#.#.#", "#...#", "#####"]
-
-
-
-arr = ["#####", "#...#", "#.#.#", "#####", "#####"]
-arr[2..4] = arr[0..2].reverse
-puts arr
-
-# できた！！じゃあこれどんなnでも適用させるには？
-#　まず配列の要素数を使う。(問題でいうとこれは入力値N)
-# 「arrの半分の位置(n/2)から、最後の要素(-1)」を「arrの最初の位置(0)から半分位置(n/2)が反転したもの」に変換させる
-arr[n/2..-1] = arr[0..n/2].reverse
-# でもこれやとlenが偶数の場合おかしくなってしまう。やから偶数の場合は、
-arr[n/2..-1] = arr[0..n/2-1].reverse
-
-["####","#..#","####","####"]
-["####","#..#","#..#","####"]
-#ということで、最後にする処理は、
-if n.even?
-  arr[n/2..-1] = arr[0..n/2-1].reverse
-else
-  arr[n/2..-1] = arr[0..n/2].reverse
-end
-puts arr
-#になるってことがわかる。
----
-
-
 n = gets.to_i
-arr = Array.new(n) { "#" * n }
-(1..n/2).each do |i|
-  # 中身の半分までを変える処理
-end
-# 左半分を反転して右半分に反映させる処理
-
----
-### 今までのをまとめると、こんな感じ。
-
-n = gets.to_i
-arr = ["#"* n] * n
-
-# 中身の半分までを変える処理
-
-arr[n/2..-1] = arr[0..n/2-1].reverse
-else
-  arr[n/2..-1] = arr[0..n/2].reverse
-end
-puts arr
----
-
-# じゃあ最後肝心な変換処理の部分を考える。
-n = gets.to_i
-arr = Array.new(n) { "#" * n }
-(1..n/2).each do |i|
-  change = n - i * 2
-  word = i.even? ? "#" : "."
-  (i..n/2).each do |s|
-    arr[s][i,change] = word * change
+arr = gets.split.map(&:to_i)
+total = arr.uniq.length
+sum = 0
+(0..n-2).each do |i|
+  ans = arr[0..i].uniq.length + arr[i+1..(-1)].uniq.length
+  if sum < ans
+    sum = ans
   end
 end
-if n.even?
-  arr[n/2..-1] = arr[0..n/2-1].reverse
-else
-  arr[n/2..-1] = arr[0..n/2].reverse
-end
-puts arr
-
-
-
-
-
-
-
-
-arr = ["####","####","####","####"]
-(1..2).each do |i|
-arr[i][1,2] = "." * 2
-end
-puts arr
-
-
-
-
-
-
+puts sum
 
 
 
 
 n = gets.to_i
-arr = ["#"* n] * n
-(1..n/2).each do |i|
-  change = n - i * 2
-  word = i.even? ? "#" : "."
-  arr[i][i,change] = word * change
+arr = gets.split.map(&:to_i)
+total = arr.uniq.length
+dup = arr.tally.to_a.select{|_,count| count >= 2 }.map{|i| i[0]}
+puts dup.map{|i| arr[0..i].uniq + arr[i+1..(n-1)]}.max
+
+---
+
+h,w = gets.split.map(&:to_i)
+arr = 2.times.map{gets.split.map(&:to_i)}
+puts arr[0][1] + arr[1][1] + arr[1][2] + arr[0][2] + arr[0][1]
+
+---
+dx = [1,0,-1,0]
+dy = [0,-1,0,1]
+R,D,L,U = 0,1,2,3
+moves = [R,D,R,U,L]
+x,y = 0,0 ; cost = 0
+h,w = gets.split.map(&:to_i)
+arr = h.times.map{gets.split.map(&:to_i)}
+moves.each do |i|
+  x += dx[i]; y += dy[i]; cost += arr[y][x]
+end
+puts cost
+
+
+---
+da = gets.to_i
+a_days = da.times.map{gets.to_i}
+db = gets.to_i
+b_days = db.times.map{gets.to_i}
+both_choice = "A"
+(1..31).each do |i|
+  if a_days.include?(i) && b_days.include?(i)
+    puts both_choice; both_choice = "AB".delete(both_choice)
+  elsif a_days.include?(i)
+    puts "A"
+  elsif b_days.include?(i)
+    puts "B"
+  else
+    puts "x"
   end
-puts arr
-# 左半分を反転して右半分に反映させる処理
-arr[n/2..-1] = arr[0..n/2].reverse
-puts arr
-
-
-n = gets.to_i
-n.times do
-
 end
+
+---
+普段の移動手段は全て paiza バス
+paica という IC カードを乗車券として使う.事前に paica にチャージをする
+運賃支払に paica のカード残額を使うと、運賃の 10 % が paica ポイントとしてたまります
+降車する時に、支払う運賃以上のポイントがある場合は、ポイントが優先的に運賃の支払いに使われます。
+ポイントで運賃を支払った場合、新たなポイントは発生しません。
+
+balance, count = gets.split.map(&:to_i)
+points = 0
+count.times do |i|
+  fare = gets.to_i
+  points >= fare ? points -= fare : (balance -= fare ; points += (fare * 0.1).to_i)
+  puts "#{balance} #{points}"
+end
+---
+
+2枚のカードの強弱関係は、次のルールによって決まります。
+・1つ目の番号が大きいカードのほうが強い
+・1つ目の番号が同じ場合、2つ目の番号が小さいカードのほうが強い
+親カードの方が強いならば "High"、そうでなければ "Low" と出力してください。
+
+parents = gets.split.map(&:to_i)
+n = gets.to_i
+n.times do |i|
+  child = gets.split.map(&:to_i)
+  puts parents[0] > child[0] ? "High" : parents[0] < child[0] ? "Low" : parents[1] < child[1] ? "High" : "Low"
+end
+
+---
+
+n,r = gets.split.map(&:to_i); len = r * 2
+boxes = n.times.map{gets.split.map(&:to_i).min}
+puts boxes.map.with_index {|i,index| index + 1 if i >= len}.compact
+
+---

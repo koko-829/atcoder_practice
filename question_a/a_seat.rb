@@ -30,3 +30,35 @@ n,a,x,y = gets.split.map(&:to_i)
 puts a < n ? x * a + (n - a) * y : x * n
 
 
+a,b = gets.split.map(&:to_i)
+puts ((a - b) / 3).to_f + b
+
+---
+
+N 日間の旅程のうち、「パイザ氏の 1 日の時間」の最も長い日と最も短い日について、その時間を求めてください。
+パイザ氏が滞在している場所の時計で 0 時を見てから、移動した場合は移動先の時計で次の日の 0 時を見るまでの時間です。
+
+
+n = gets.to_i
+arr = n.times.map{gets.split.map(&:to_i)}
+p arr
+
+---
+校正ルール表は以下の条件を満たす、長さ 26 の文字列です。
+i 番目の文字は英字アルファベット順で i 番目の文字の大文字または小文字
+[*"A".."Z"].length
+
+rules = gets.chomp.split('')
+upcases = [*"A".."Z"]
+w = gets.chomp.split('').map(&:upcase)
+w.each_with_index do |i, index|
+  w[index] = rules[upcases.index(i)]
+end
+puts w.join
+
+---
+num = gets.chomp.split('').delete('-').map(&:to_i)
+p num
+
+---
+
