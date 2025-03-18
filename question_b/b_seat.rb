@@ -102,3 +102,93 @@ boxes = n.times.map{gets.split.map(&:to_i).min}
 puts boxes.map.with_index {|i,index| index + 1 if i >= len}.compact
 
 ---
+
+n = gets.to_i
+arr = n.times.map{gets.split.map(&:to_i)}
+p arr
+
+puts "#{(1029 - 431) / 60}  #{(1029 - 431) % 60}"
+
+---
+
+n = gets.to_i
+w = gets.chomp
+words = n.times.map{gets.chomp}.select{|i| i.include?(w)}
+p words
+
+
+arr = gets.split(/[ :]/).map{&:to_i}
+
+time = "02:50 12:30"
+p time.split #=> ["02:50", "12:30"]
+p time.split(/[: ]/) #=> ["02", "50", "12", "30"]
+p time.split.map{|i| i.split(":")} #=> [["02", "50"], ["12", "30"]]
+# ついでにブロック変数省略する書き方。
+p "02:50 12:30".split.map{ _1.split(":") }
+
+---
+
+最初に各人はそれぞれボールをいくつか所持しています。
+当な順番でボールをパスしていくのですが、この際にパスする相手とボールの個数を宣言します。
+
+n = gets.to_i #n人存在する
+balls = [0].concat(n.times.map{gets.to_i})
+count = gets.to_i #count回パス回しする
+count.times do |i|
+  info = gets.split.map(&:to_i)
+  if balls[info[0]] >= info[2]
+    balls[info[0]] -= info[2]
+    balls[info[1]] += info[2]
+  else
+    balls[info[1]] += balls[info[0]]
+    balls[info[0]] = 0
+  end
+end
+puts balls[1..n]
+
+---
+n = gets.to_i #n人
+ages = [0].concat(n.times.map{gets.to_i})
+beans = Array.new(n + 1, 0)
+count = gets.to_i # 実行回数
+count.times do |i|
+  start,last, num = gets.split.map(&:to_i)
+  (start..last).each do |s|
+    beans[s] = [(beans[s] + num), ages[s]].min
+  end
+end
+puts beans[1..n]
+
+---
+win = gets.split.map(&:to_i)
+n = gets.to_i
+n.times do |i|
+  num = gets.split.map(&:to_i)
+  puts num.count {|n| win.include?(n)}
+end
+
+--
+ある人の座標を (x, y), 2つの円の中心の座標を (xc, yc)
+半径をそれぞれ r_1, r_2 (r_1 < r_2) とします。
+
+xc, yc, r1, r2 = gets.split.map(&:to_i)
+n = gets.to_i
+n.times do |i|
+  x,y = gets.split.map(&:to_i)
+  base = (x - xc) ** 2 + (y - yc) ** 2
+  puts (base >= r1 * 2) && (base <= r2 ** 2) ? "yes" : "no"
+end
+
+xc, yc, r1, r2 = gets.split.map(&:to_i)
+n = gets.to_i
+n.times do |i|
+  x,y = gets.split.map(&:to_i)
+  base = (x - xc) ** 2 + (y - yc) ** 2
+  puts (base >= r1 ** 2) && (base <= r2 ** 2) ? "yes" : "no"
+end
+
+---
+
+n = gets.to_i
+id = n.times.map{gets.chomp}
+puts id.sort_by {|i| i.delete("^0-9").to_i}
