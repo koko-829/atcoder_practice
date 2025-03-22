@@ -62,3 +62,30 @@ p num
 
 ---
 
+sum = 2.times.map{gets.to_i}
+puts sum >= 1000 ? sum - 100 : sum
+
+---
+n = gets.to_i
+arr = gets.split.map(&:to_i)
+ans = arr.sort
+q = gets.to_i
+q.times do |i|
+  s,t = gets.split.map(&:to_i)
+  arr[s-1], arr[t-1] = arr[t-1], arr[s-1]
+end
+puts arr == ans ? "Yes" : "No"
+
+%w(R E T N Q)
+name = "RUETNQ"
+# 1と3のインデックス部分を入れ替えたいんだよなぁ…
+workspace = name[2]
+name[2] = name[4]
+name[4] = workspace
+puts name
+#=> RUNTEQ
+
+name = "RUETNQ"
+name[2], name[4] = name[4], name[2]
+puts name
+#=> RUNTEQ
