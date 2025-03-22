@@ -89,3 +89,17 @@ name = "RUETNQ"
 name[2], name[4] = name[4], name[2]
 puts name
 #=> RUNTEQ
+
+---
+n = gets.to_i
+arr = gets.split.map(&:to_i)
+only_num = arr.tally.map{|num,count| num if count == 1}.compact
+puts only_num.empty? ? -1 : (arr.index(only_num.max) + 1)
+
+s = gets.chomp
+if s.reverse == s
+  puts s
+  exit
+end
+t = s.match(/(.)\1{1,}$/)
+puts t
